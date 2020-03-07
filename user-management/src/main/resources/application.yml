@@ -1,0 +1,11 @@
+spring:
+ profiles.active: local
+
+---
+spring:
+ profiles: local
+ datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/sample_user_management?currentSchema=um
+    driver-class-name: org.postgresql.Driver	
