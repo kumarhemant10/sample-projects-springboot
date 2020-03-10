@@ -37,9 +37,10 @@ public class UserControllerTests extends AbstractTest {
 	@MockBean UserService userService;
 	
 	@Before public void setUpUserService() {
-		when(userService.findAll()).thenReturn(getAllUsers());
-		when(userService.findById(Long.valueOf(1))).thenReturn(getAllUsers().get(1));
-		when(userService.save(any(User.class))).thenReturn(getAllUsers().get(0));
+		List<User> users = getAllUsers();
+		when(userService.findAll()).thenReturn(users);
+		when(userService.findById(Long.valueOf(1))).thenReturn(users.get(1));
+		when(userService.save(any(User.class))).thenReturn(users.get(0));
 	}
 	
 	private List<User> getAllUsers() {
