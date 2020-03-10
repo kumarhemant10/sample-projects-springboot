@@ -19,7 +19,7 @@ public interface UserService {
 	 * 
 	 * @param user
 	 */
-	void save(User user);
+	User save(User user);
 
 	/**
 	 * get user by userId
