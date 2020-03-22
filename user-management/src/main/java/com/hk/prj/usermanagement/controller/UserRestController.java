@@ -6,39 +6,28 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.hk.prj.usermanagement.constants.UrlConstant;
 import com.hk.prj.usermanagement.dto.UserDto;
 import com.hk.prj.usermanagement.model.User;
 import com.hk.prj.usermanagement.service.UserService;
 
-@Controller
-public class UserController {
+@RestController
+@RequestMapping("/api/v1")
+public class UserRestController {
 	
 	@Autowired UserService userService;
 	@Autowired ModelMapper modelMapper;
-	
-	@GetMapping("/user-management")
-	public ModelAndView getUserManagementView(ModelAndView modelAndView) {
-		modelAndView.setViewName("users");
-		modelAndView.addObject("users", userService.findAll());
-		return modelAndView;
-	}
-
-	@GetMapping("/add-user-view")
-	public ModelAndView getAddUserView(ModelAndView modelAndView) {
-		modelAndView.setViewName("add-user");
-		modelAndView.addObject("user", new User());
-		return modelAndView;
-	}
 	
 	@GetMapping(UrlConstant.USERS)
 	@ResponseStatus(HttpStatus.OK)
@@ -54,14 +43,25 @@ public class UserController {
 	}
 	
 	@PostMapping(UrlConstant.USERS)
-	@ResponseStatus(HttpStatus.CREATED)	
-	public ModelAndView save(@ModelAttribute("user") UserDto userDto) {
+	@ResponseStatus(HttpStatus.CREATED)
+	public UserDto save(@RequestBody UserDto userDto) {
 		User user = convertDtoToEntity(userDto);
 		userService.save(user);
-		ModelAndView modelAndView = new ModelAndView("add-user");
-		modelAndView.addObject("user", new User());
-		modelAndView.addObject("savedUser", user);
-		return modelAndView;
+		return convertEntityToDto(user);
+	}
+
+	@PutMapping(UrlConstant.USERS_BY_ID)
+	@ResponseStatus(HttpStatus.OK)
+	public UserDto update(@PathVariable("id") Long userId, @RequestBody UserDto userDto) {
+		User user = convertDtoToEntity(userDto);
+		userService.save(user);
+		return convertEntityToDto(user);
+	}
+	
+	@DeleteMapping(UrlConstant.USERS_BY_ID)
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable("id") Long userId) {
+		userService.delete(userId);
 	}
 	
 	private User convertDtoToEntity(UserDto userDto) {
