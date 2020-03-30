@@ -15,47 +15,51 @@
 
 <body>
 
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" href="/">Home</a> 
-		<a class="navbar-brand" href="/user-management">Users</a>
-	</nav>
+	<div th:replace="fragments/header :: header"></div>
 
-	<main role="main" class="container">
-		<div class="starter-template">
-			<h1>User Management Application</h1>
-			<h2>Click on Menu to load screen</h2>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col">
+				<h4>Users</h4>
+			</div>
+			<div class="col">
+				<a href="/add-user-view" class="btn btn-success float-right">
+					Add User </a>
+			</div>
 		</div>
 
-		<div class="userslist" th:unless="${#lists.isEmpty(users)}">
-			<h2>List of Users</h2>
-			<h4> 
-				<a href="/add-user-view" class="btn btn-success"> Add User </a>
-			</h4>
+		<div class="row table-responsive-sm"
+			th:unless="${#lists.isEmpty(users)}">
+			<div class="col table-responsive-sm top-buffer">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>User Name</th>
+							<th>First Name</th>
+							<th>Middle Name</th>
+							<th>Last Name</th>
+							<th>Email</th>
+							<th>Edit</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="user : ${users}" th:id="${user.userId}">
+							<td th:text="${user.userName}"></td>
+							<td th:text="${user.firstName}"></td>
+							<td th:text="${user.middleName}"></td>
+							<td th:text="${user.lastName}"></td>
+							<td th:text="${user.email}"></td>
 
-			<table>
-				<thead>
-					<tr>
-						<th>User Name</th>
-						<th>First Name</th>
-						<th>Middle Name</th>
-						<th>Last Name</th>
-						<th>Email</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="user : ${users}">
-						<td th:text="${{user.userName}}"></td>
-						<td th:text="${{user.firstName}}"></td>
-						<td th:text="${{user.middleName}}"></td>
-						<td th:text="${{user.lastName}}"></td>
-						<td th:text="${{user.email}}"></td>
-					</tr>
-				</tbody>
+							<td>
+								<button type="submit" class="btn btn-primary">Edit</button>
+							</td>
+						</tr>
+					</tbody>
 
-			</table>
+				</table>
+			</div>
 		</div>
-	</main>
-
+	</div>
 	<script type="text/javascript"
 		th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
 </body>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,42 +27,42 @@ public class UserController {
 	@Autowired UserService userService;
 	@Autowired ModelMapper modelMapper;
 	
-	@GetMapping("/user-management")
-	public ModelAndView getUserManagementView(ModelAndView modelAndView) {
-		modelAndView.setViewName("users");
+	@GetMapping(UrlConstant.USERS)
+	public ModelAndView getUserManagementView() {
+		ModelAndView modelAndView = new ModelAndView("users");
 		modelAndView.addObject("users", userService.findAll());
 		return modelAndView;
 	}
 
 	@GetMapping("/add-user-view")
-	public ModelAndView getAddUserView(ModelAndView modelAndView) {
-		modelAndView.setViewName("add-user");
-		modelAndView.addObject("user", new User());
-		return modelAndView;
-	}
-	
-	@GetMapping(UrlConstant.USERS)
-	@ResponseStatus(HttpStatus.OK)
-	public List<UserDto> get() {
-		List<User> users = userService.findAll();
-		return convertEntityToDto(users);
-	}
-	
-	@GetMapping(UrlConstant.USERS_BY_ID)
-	@ResponseStatus(HttpStatus.OK)
-	public UserDto get(@PathVariable("id") Long userId) {
-		return convertEntityToDto(userService.findById(userId));
-	}
-	
-	@PostMapping(UrlConstant.USERS)
-	@ResponseStatus(HttpStatus.CREATED)	
-	public ModelAndView save(@ModelAttribute("user") UserDto userDto) {
-		User user = convertDtoToEntity(userDto);
-		userService.save(user);
+	public ModelAndView getAddUserView() {
 		ModelAndView modelAndView = new ModelAndView("add-user");
 		modelAndView.addObject("user", new User());
-		modelAndView.addObject("savedUser", user);
 		return modelAndView;
+	}
+
+	@GetMapping("/edit-user-view/{id}")
+	public ModelAndView getEditUserView(@PathVariable("id") Long userId) {
+		User user = userService.findById(userId);
+		ModelAndView modelAndView = new ModelAndView("add-user");
+		modelAndView.addObject("user", user);
+		return modelAndView;
+	}
+
+	@PostMapping(UrlConstant.USERS)
+	@ResponseStatus(HttpStatus.CREATED)	
+	public String save(@ModelAttribute("user") UserDto userDto) {
+		User user = convertDtoToEntity(userDto);
+		userService.save(user);
+		return "redirect:/users";
+	}
+	
+	@PutMapping(UrlConstant.USERS_BY_ID)
+	@ResponseStatus(HttpStatus.OK)	
+	public String update(@ModelAttribute("user") UserDto userDto) {
+		User user = convertDtoToEntity(userDto);
+		userService.save(user);
+		return "redirect:/users";
 	}
 	
 	private User convertDtoToEntity(UserDto userDto) {

@@ -13,3 +13,8 @@ h1{
 h2{
 	color:#FF0000;
 }
+.logo {
+    height: 40px;
+}
+
+.top-buffer { margin-top:5px; }

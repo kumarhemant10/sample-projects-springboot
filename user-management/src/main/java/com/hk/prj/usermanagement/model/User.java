@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,10 +23,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	
+	@NotBlank(message = "user name is mandatory")
 	private String userName;
+	@NotBlank(message = "first name is mandatory")
 	private String firstName;
 	private String middleName;
+	@NotBlank(message = "first name is mandatory")
 	private String lastName;
+	@NotBlank(message = "email is mandatory")
 	private String email;
 	
 	public User(String userName, String firstName, String middleName, String lastName, String email) {

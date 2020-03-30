@@ -1,0 +1,24 @@
+<div class="header" th:fragment="header"
+	xmlns:th="http://www.thymeleaf.org">
+	<nav
+		class="navbar navbar-expand-lg navbar-light fixed-top box-shadow">
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#nav-content" aria-controls="nav-content"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<a class="navbar-brand" th:href="@{/home}"> <img
+			th:src="@{/images/logo.png}" alt="um logo" class="logo" />
+		</a>
+		<div class="collapse navbar-collapse" id="nav-content">
+			<ul class="navbar-nav float-right" id="headerMenu">
+				<li class="nav-item"><a class="nav-link" href="/"
+					title="Home"> <i class="fa fa-home"></i> Home
+				</a></li>
+				<li class="nav-item"><a class="nav-link" href="/users"
+					title="Users"> <i class="fa fa-home"></i> Users
+				</a></li>
+			</ul>
+		</div>
+	</nav>
+</div>
