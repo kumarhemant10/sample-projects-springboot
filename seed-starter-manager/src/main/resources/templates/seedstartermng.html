@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>My title</title>
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+	<!-- header -->
+	<div th:replace="fragments/header :: header"></div>
+	<!-- seed starter list -->
+	<div class="seedstarterlist"
+		th:unless="${#lists.isEmpty(allSeedStarters)}">
+
+		<h2 th:text="#{title.list}">List of Seed Starters</h2>
+
+		<table>
+			<thead>
+				<tr>
+					<th th:text="#{seedstarter.datePlanted}">Date Planted</th>
+					<th th:text="#{seedstarter.covered}">Covered</th>
+					<th th:text="#{seedstarter.type}">Type</th>
+					<th th:text="#{seedstarter.features}">Features</th>
+					<th th:text="#{seedstarter.rows}">Rows</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="sb : ${allSeedStarters}">
+					<td th:text="${{sb.datePlanted}}">13/01/2011</td>
+					<td th:text="#{|bool.${sb.covered}|}">yes</td>
+					<td th:text="#{|seedstarter.type.${sb.type}|}">Wireframe</td>
+					<td
+						th:text="${#strings.arrayJoin(
+                           #messages.arrayMsg(
+                               #strings.arrayPrepend(sb.features,'seedstarter.feature.')),
+                           ', ')}">Electric
+						Heating, Turf</td>
+					<td>
+						<table>
+							<tbody>
+								<tr th:each="row,rowStat : ${sb.rows}">
+									<td th:text="${rowStat.count}">1</td>
+									<td th:text="${row.variety.name}">Thymus Thymi</td>
+									<td th:text="${row.seedsPerCell}">12</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="thymebg">
+	<h2 th:text="#{title.add.new.starter}">Add new seed starter</h2>
+	<!-- input  -->
+	<form action="#" th:action="@{/seedstartermng}" th:object="${seedStarter}" method="post">
+		<div>
+			<label th:for="${#ids.next('datePlanted')}" th:text="#{seedstarter.datePlanted}" ></label>
+			<input type="text" th:field="*{datePlanted}" />
+		</div>
+		
+		<div>
+			<label th:for="${#ids.next('covered')}" th:text="#{seedstarter.covered}" ></label> 
+			<input type="checkbox" th:field="*{covered}" />
+		</div>
+		<div>
+			<label th:for="${#ids.next('type')}" th:text="#{seedstarter.type}"></label>
+			<select th:field="*{type}"> 
+				<option th:each="type : ${allTypes}" 
+					th:value="${type}" th:text="${type}">Wireframe</option>
+			</select>
+		</div>
+		
+		<div>
+			<label th:for="${#ids.next('features')}" th:text="#{seedstarter.features}"></label>
+			<ul>
+				<li th:each="feat : ${allFeatures}">
+					<input type="checkbox" th:field="*{features}" th:value="${feat}" />
+					<label th:for="${#ids.prev('features')}"
+							th:text="${feat}">Heating</label>
+				</li>
+			</ul>
+		</div>
+		<!-- rows  -->
+			<div>
+
+				<table>
+					<thead>
+						<tr>
+							<th th:text="#{seedstarter.rows.head.rownum}">Row</th>
+							<th th:text="#{seedstarter.rows.head.variety}">Variety</th>
+							<th th:text="#{seedstarter.rows.head.seedsPerCell}">Seeds
+								per cell</th>
+							<th>
+								<button type="submit" name="addRow"
+									th:text="#{seedstarter.row.add}">Add row</button>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="row,rowStat : *{rows}">
+							<td th:text="${rowStat.count}">1</td>
+							<td><select th:field="*{rows[__${rowStat.index}__].variety}">
+									<option th:each="var : ${allVarieties}" th:value="${var.id}"
+										th:text="${var.name}">Thymus Thymi</option>
+							</select></td>
+							<td><input type="text"
+								th:field="*{rows[__${rowStat.index}__].seedsPerCell}" /></td>
+							<td>
+								<button type="submit" name="removeRow"
+									th:value="${rowStat.index}" th:text="#{seedstarter.row.remove}">Remove
+									row</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- submit record -->
+			<button type="submit" name="save" th:text="#{seedstarter.row.save}">ADD SEED STARTER</button>
+		</form>
+	</div>
+
+
+
+
+</body>
+</html>
