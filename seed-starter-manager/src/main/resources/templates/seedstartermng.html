@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{fragments/main_layout}">
 <head>
 <meta charset="ISO-8859-1">
 <title>My title</title>
 <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
-	<!-- header -->
-	<div th:replace="fragments/header :: header"></div>
+	<!-- layout container -->
+	<div layout:fragment="content">
 
 	<!-- body -->
 	<div class="container-fluid page-content">
@@ -149,5 +149,6 @@
 	</div>
 	<!-- body div close -->
 
+	</div>
 </body>
 </html>
