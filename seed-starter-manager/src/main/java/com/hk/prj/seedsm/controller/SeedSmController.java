@@ -1,6 +1,7 @@
 package com.hk.prj.seedsm.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class SeedSmController {
 
 	@RequestMapping(path={"/","/seedstartermng"}, method = RequestMethod.GET)
 	public String showSeedstarters(final SeedStarter seedStarter) {
-	    seedStarter.setDatePlanted(LocalDate.now());
+	    seedStarter.setDatePlanted(LocalDateTime.now());
 	    return "seedstartermng";
 	}
 	

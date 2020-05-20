@@ -1,6 +1,7 @@
 package com.hk.prj.seedsm.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import lombok.Data;
 public class SeedStarter extends BaseEntity{
 
 	
-	private LocalDate datePlanted;
+	private LocalDateTime datePlanted;
 	private Boolean covered;
 	private String type;
 	private String[] features;
